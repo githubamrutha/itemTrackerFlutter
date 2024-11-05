@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/item_provider.dart';
 
-class ItemEditScreen extends StatelessWidget {
+class ItemAddScreen extends StatelessWidget {
   final String? itemId;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  ItemEditScreen({Key? key, this.itemId}) : super(key: key);
+  ItemAddScreen({this.itemId});
 
   @override
   Widget build(BuildContext context) {
-    final String? itemId =
-        ModalRoute.of(context)?.settings.arguments as String?;
     final itemProvider = Provider.of<ItemProvider>(context, listen: false);
     final item = itemId != null
         ? itemProvider.items.firstWhere((item) => item.id == itemId)
@@ -23,7 +21,7 @@ class ItemEditScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Item'),
+        title: Text('Add Item'),
         backgroundColor: const Color.fromARGB(255, 153, 197, 233),
       ),
       body: Padding(
@@ -96,7 +94,7 @@ class ItemEditScreen extends StatelessWidget {
                       MediaQuery.of(context).size.width > 600 ? 30.0 : 20.0,
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16.0,
                 color: Colors.black87,
               ),
@@ -105,22 +103,15 @@ class ItemEditScreen extends StatelessWidget {
             // SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                if (itemId != null) {
-                  itemProvider.editItem(
-                    itemId!,
-                    _nameController.text,
-                    _descriptionController.text,
-                  );
-                  Navigator.pop(context);
-                } else {
-                  // Handle the case where itemId is null, perhaps with an error message
-                  print("Error: itemId is null");
-                }
+                itemProvider.addItem(
+                    _nameController.text, _descriptionController.text);
+
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(
                     255, 87, 130, 160), // Set your desired background color
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                     vertical: 15.0,
                     horizontal: 20.0), // Adjust padding as needed
               ),
@@ -129,12 +120,13 @@ class ItemEditScreen extends StatelessWidget {
                     .min, // Ensures the button size is based on its content
                 children: [
                   Icon(
-                    Icons.save, // Icon changes based on the action
+                    Icons.add,
+                    // Icon changes based on the action
                     color: Colors.white, // Icon color
                   ),
                   SizedBox(width: 8.0), // Spacing between icon and text
                   Text(
-                    'Save',
+                    'Add',
                     style: TextStyle(
                       color: Colors.white, // Text color
                     ),

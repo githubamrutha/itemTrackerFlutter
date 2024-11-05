@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:item_tracker/screens/item_add_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/item_provider.dart';
 import 'screens/items_list_screens.dart';
@@ -26,7 +27,7 @@ class ItemTrackerApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => ItemListScreen(),
-          '/add': (context) => ItemEditScreen(),
+          '/add': (context) => ItemAddScreen(),
           '/edit': (context) => ItemEditScreen(),
         },
       ),
