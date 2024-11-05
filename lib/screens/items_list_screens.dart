@@ -18,20 +18,39 @@ class ItemListScreen extends StatelessWidget {
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            return ListTile(
-              title: Text(item.name),
-              subtitle: Text(item.description),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  Provider.of<ItemProvider>(context, listen: false)
-                      .removeItem(item.id);
+            return Builder(builder: (tileContext) {
+              return GestureDetector(
+                onTap: () {
+                  // Get the RenderBox for this ListTile when tapped
+                  RenderBox renderBox =
+                      tileContext.findRenderObject() as RenderBox;
+
+                  // Calculate position and size
+                  final position = renderBox.localToGlobal(Offset.zero);
+                  final size = renderBox.size;
+
+                  // Print the position and size for each ListTile
+                  print("Item: ${item.name}");
+                  print("Position: $position, Size: $size");
+
+                  // You could use the position and size here for other calculations
                 },
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/edit', arguments: item.id);
-              },
-            );
+                child: ListTile(
+                  title: Text(item.name),
+                  subtitle: Text(item.description),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      Provider.of<ItemProvider>(context, listen: false)
+                          .removeItem(item.id);
+                    },
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/edit', arguments: item.id);
+                  },
+                ),
+              );
+            });
           },
         ),
         floatingActionButton: LayoutBuilder(
